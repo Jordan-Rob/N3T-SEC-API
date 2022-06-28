@@ -1,0 +1,24 @@
+{
+  "name": "n3t-sec-api",
+  "version": "1.0.0",
+  "description": "Api to run network-security actions and analysis in a linux envronment from a web based application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jordan-Rob/N3T-SEC-API.git"
+  },
+  "author": "Jordan Rob Byamugisha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jordan-Rob/N3T-SEC-API/issues"
+  },
+  "homepage": "https://github.com/Jordan-Rob/N3T-SEC-API#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "express": "^4.18.1",
+    "mongoose": "^6.4.1"
+  }
+}
