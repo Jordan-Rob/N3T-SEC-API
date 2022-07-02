@@ -1,6 +1,7 @@
 // use async handler if you do not want to write try-catch code/ or promise chains 
 const asyncHandler = require('express-async-handler')
 const cp = require('child_process')
+const Log = require('../models/logModel')
 
 
 
@@ -9,13 +10,18 @@ const cp = require('child_process')
 // @access Public
 const pwd = asyncHandler( async (req, res) => {
     
-    let msg 
+    const cmd = 'pwd'
 
-    cp.exec('pwd', (err, stdout, stderr) => {
+    cp.exec(cmd, async (err, stdout, stderr) => {
         console.log('#1, exec')
         console.log(stdout)
-        msg = stdout
-        res.json({message:`${msg}`})
+
+        const newLog = await Log.create({
+            cmd: cmd,
+            output: `${stdout}`
+        })
+
+        res.status(200).json({log: newLog})
     })
 })
 
@@ -25,8 +31,9 @@ const pwd = asyncHandler( async (req, res) => {
 const ifconfig = asyncHandler( async (req, res) => {
     
     let msg 
+    const cmd = 'ifconfig'
 
-    cp.exec('ifconfig', (err, stdout, stderr) => {
+    cp.exec(cmd, (err, stdout, stderr) => {
         console.log('#1, exec')
         console.log(stdout)
         msg = stdout
