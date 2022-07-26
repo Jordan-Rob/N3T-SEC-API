@@ -6,25 +6,51 @@ const Log = require('../models/logModel')
 
 
 
-// @desc Get system pwd
+
+
+
+
+// @desc end point to run snort IDS
+// @route POST /api/sec-actions
+// @access Public
+const runOrKillSnort = async (req, res) => {
+    
+    //const cmd = 'echo root | sudo snort -q -l /var/log/snort -i eth0 -A console -c /etc/snort/snort.conf'
+
+    var snortcp 
+
+    if(req.body.cmd === 'start'){
+        snortcp = cp.exec('echo root | sudo snort -q -l /var/log/snort -i eth0 -A full -c /etc/snort/snort.conf', async (stdout, stderr) => {
+            console.log('#1, exec')
+            /*
+            const newLog = await Log.create({
+                cmd: cmd,
+                output: `${stdout}`
+            })
+    
+            res.status(200).json({log: newLog})
+            */
+        })
+    
+    }
+        
+    snortcp.kill()
+
+    
+    
+}
+
+/*
+// @desc end point to kill snort IDS
 // @route GET /api/sec-actions
 // @access Public
-const pwd = asyncHandler( async (req, res) => {
+const killSnort = asyncHandler( async (req, res) => {
     
-    const cmd = 'pwd'
+    snortcp.kil
 
-    cp.exec(cmd, async (err, stdout, stderr) => {
-        console.log('#1, exec')
-        console.log(stdout)
-
-        const newLog = await Log.create({
-            cmd: cmd,
-            output: `${stdout}`
-        })
-
-        res.status(200).json({log: newLog})
-    })
 })
+
+*/
 
 // @desc Get alerts
 // @route GET /api/alerts
@@ -78,7 +104,7 @@ const whoami = asyncHandler( async (req, res) => {
 })
 
 module.exports = {
-    pwd,
+    runOrKillSnort,
     snortAlerts,
     ifconfig,
     whoami

@@ -1,10 +1,11 @@
 const express = require("express")
 const router =  express.Router()
-const { pwd, snortAlerts, ifconfig, whoami } = require('../controllers/secActionController')
+const { runOrKillSnort, snortAlerts, ifconfig, whoami } = require('../controllers/secActionController')
+const protect = require('../middleware/authMiddleware')
 
-router.get("/status", pwd )
+router.post("/status", protect, runOrKillSnort )
 
-router.get("/alerts", snortAlerts)
+router.get("/alerts", protect, snortAlerts)
 
 router.get("/net", ifconfig )
 
