@@ -4,6 +4,10 @@ const cp = require('child_process')
 const fs = require("fs")
 const Log = require('../models/logModel')
 
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken)
+
 
 
 
@@ -62,6 +66,40 @@ const snortAlerts = asyncHandler( async (req, res) => {
             console.log(error)
             res.status(401)
         } else {
+            //Check if data has relevant flag then send sms alert
+            const checkedPing = data.includes("ICMP Ping")
+            if(checkedPing){
+                client.messages
+                    .create({
+                        body: 'N3T-SEC Alert! [Priority 0] ICMP Ping detected',
+                        from: '+13253997192',
+                        to: '+256787169175'
+                    })
+                    .then( message => console.log(message.sid))
+            }
+
+            const checkedFTP = data.includes("FTP Authentication")
+            if(checkedFTP){
+                client.messages
+                    .create({
+                        body: 'N3T-SEC Alert! [Priority 0] FTP Authntication Attempt detected',
+                        from: '+13253997192',
+                        to: '+256787169175'
+                    })
+                    .then( message => console.log(message.sid))
+            }
+
+            const checkedSMB = data.includes("SMB remote")
+            if(checkedSMB){
+                client.messages
+                    .create({
+                        body: 'N3T-SEC Alert! [Priority 1] SMB EternalBlue Remote code execution Attempt detected',
+                        from: '+13253997192',
+                        to: '+256787169175'
+                    })
+                    .then( message => console.log(message.sid))
+            }
+
             // Edit data so that each alert is returned as an array item, split by empty line
             const alerts = data.split("\n\n").filter(a => a.trim())
             res.status(200).json({alerts: alerts})
