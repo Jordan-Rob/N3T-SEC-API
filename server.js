@@ -2,6 +2,7 @@ const express = require('express')
 const dotenv = require('dotenv').config()
 const colors = require('colors')
 const secRoutes = require('./routes/secActionRoutes')
+const userRoutes = require('./routes/userRoutes')
 const connectDB = require('./config/db')
 
 const port = process.env.PORT || 5000
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: false }))
 
 
 app.use('/api/sec-actions', secRoutes)
+app.use('/api/users', userRoutes)
 
 
 app.listen(port, () => console.log(`server started on ${port}`))
