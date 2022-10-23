@@ -68,6 +68,7 @@ const snortAlerts = asyncHandler( async (req, res) => {
         } else {
             //Check if data has relevant flag then send sms alert
             const checkedPing = data.includes("ICMP Ping")
+            console.log(checkedPing)
             if(checkedPing){
                 client.messages
                     .create({
